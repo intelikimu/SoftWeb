@@ -11,10 +11,10 @@ const blogPosts = [
       
       <h2 class="text-2xl font-bold text-white mt-8 mb-4">Code Generation and Completion</h2>
       <p class="mb-4">AI-powered code generators like GitHub Copilot are changing how developers write code. These tools can suggest entire functions based on comments or function signatures, significantly speeding up the development process.</p>
-      <p class="mb-4">For instance, a developer can write a comment describing a function's purpose, and the AI assistant will generate the implementation. This is particularly helpful for boilerplate code and common patterns.</p>
+      <p class="mb-4">For instance, a developer can write a comment describing a function&apos;s purpose, and the AI assistant will generate the implementation. This is particularly helpful for boilerplate code and common patterns.</p>
       
       <div class="bg-[#1a1a1a] border-l-4 border-blue-500 p-4 my-6">
-        <p class="italic text-gray-300">"AI assistants are not replacing developers; they're augmenting their capabilities, allowing them to focus on more complex and creative aspects of software development."</p>
+        <p class="italic text-gray-300">"AI assistants are not replacing developers; they&apos;re augmenting their capabilities, allowing them to focus on more complex and creative aspects of software development."</p>
       </div>
       
       <h2 class="text-2xl font-bold text-white mt-8 mb-4">Automated Testing</h2>

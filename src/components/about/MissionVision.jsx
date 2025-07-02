@@ -51,7 +51,7 @@ export default function MissionVision() {
               <h2 className="text-3xl font-bold text-gray-100">Our Mission</h2>
             </div>
             <p className="text-gray-300 text-lg leading-relaxed">
-              To empower businesses through innovative technology solutions that drive growth, efficiency, and competitive advantage. We're committed to delivering exceptional value by combining technical excellence with deep industry understanding.
+              To empower businesses through innovative technology solutions that drive growth, efficiency, and competitive advantage. We&apos;re committed to delivering exceptional value by combining technical excellence with deep industry understanding.
             </p>
             <ul className="mt-6 space-y-3">
               <li className="flex items-center text-gray-300">
