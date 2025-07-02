@@ -13,7 +13,7 @@ export default function About() {
           </h1>
           <div className="h-1 w-24 bg-blue-500 mx-auto mb-12"></div>
           <p className="text-xl text-gray-300 text-center max-w-3xl mx-auto">
-            We're a team of innovators, problem solvers, and tech enthusiasts dedicated to transforming how businesses operate in the digital world.
+            We are a team of innovators, problem solvers, and tech enthusiasts dedicated to transforming how businesses operate in the digital world.
           </p>
         </div>
       </div>
