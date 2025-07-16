@@ -10,8 +10,7 @@ const navLinks = [
   { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
   { href: '/blogs', label: 'Blogs' },
-  
-  // { href: '/contact', label: 'Contact' },
+  { href: '/contact', label: 'Contact' },
 ]
 
 export default function Navbar() {
@@ -59,7 +58,7 @@ export default function Navbar() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <Link href="/">TechWave</Link>
+          <Link href="/">Faracity</Link>
         </motion.div>
 
         {/* Desktop Navigation */}

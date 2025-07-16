@@ -41,7 +41,7 @@ export default function HeroSection() {
   }, [])
 
   return (
-    <section className="relative h-[80vh] w-full overflow-hidden bg-[#121212]">
+    <section className="relative h-[100vh] w-full overflow-hidden bg-[#121212]">
       <div className="container mx-auto h-full px-4 pt-16 md:pt-20">
         <div className="grid h-full grid-cols-1 items-center gap-8 lg:grid-cols-2">
           <motion.div 

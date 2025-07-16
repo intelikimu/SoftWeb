@@ -1,80 +1,37 @@
 import Link from 'next/link';
 import BlogCategories from '@/components/blogs/BlogCategories';
-
-// Sample blog post data (in production, this would come from a database or CMS)
-const blogPosts = [
-  {
-    id: 1,
-    title: 'How AI is Transforming Software Development',
-    content: `
-      <p class="mb-4">Artificial Intelligence (AI) is revolutionizing the software development industry in unprecedented ways. From automating routine coding tasks to enhancing testing procedures, AI tools are becoming indispensable for modern development teams.</p>
-      
-      <h2 class="text-2xl font-bold text-white mt-8 mb-4">Code Generation and Completion</h2>
-      <p class="mb-4">AI-powered code generators like GitHub Copilot are changing how developers write code. These tools can suggest entire functions based on comments or function signatures, significantly speeding up the development process.</p>
-      <p class="mb-4">For instance, a developer can write a comment describing a function&apos;s purpose, and the AI assistant will generate the implementation. This is particularly helpful for boilerplate code and common patterns.</p>
-      
-      <div class="bg-[#1a1a1a] border-l-4 border-blue-500 p-4 my-6">
-        <p class="italic text-gray-300">"AI assistants are not replacing developers; they&apos;re augmenting their capabilities, allowing them to focus on more complex and creative aspects of software development."</p>
-      </div>
-      
-      <h2 class="text-2xl font-bold text-white mt-8 mb-4">Automated Testing</h2>
-      <p class="mb-4">AI is also transforming how software is tested. Machine learning algorithms can analyze code changes and automatically generate tests that focus on potentially problematic areas.</p>
-      <p class="mb-4">AI-driven testing tools can also predict which parts of an application are most likely to contain bugs based on historical data, allowing teams to allocate testing resources more effectively.</p>
-      
-      <h2 class="text-2xl font-bold text-white mt-8 mb-4">Predictive Analytics for Project Management</h2>
-      <p class="mb-4">Project managers are leveraging AI to forecast project timelines and potential bottlenecks. By analyzing data from previous projects, these tools can provide more accurate estimates and highlight risks before they become issues.</p>
-      
-      <h2 class="text-2xl font-bold text-white mt-8 mb-4">Challenges and Considerations</h2>
-      <p class="mb-4">Despite the benefits, integrating AI into software development workflows comes with challenges. Teams need to be aware of potential biases in AI models, security implications, and the importance of maintaining human oversight.</p>
-      <p class="mb-4">Additionally, developers need to develop new skills to work effectively with AI tools, understanding their capabilities and limitations.</p>
-      
-      <h2 class="text-2xl font-bold text-white mt-8 mb-4">Conclusion</h2>
-      <p class="mb-4">As AI continues to evolve, its impact on software development will only grow. Organizations that effectively integrate these tools into their workflows will gain significant competitive advantages in terms of productivity, code quality, and innovation.</p>
-    `,
-    category: 'AI',
-    tags: ['Machine Learning', 'Software Development', 'Automation', 'Programming'],
-    image: '/blogs/ai-dev.jpg',
-    date: 'June 28, 2023',
-    author: 'Sarah Johnson',
-    authorImage: '/team/team-1.jpg',
-    authorBio: 'Sarah is a senior AI researcher with over 8 years of experience in machine learning and software development.',
-    slug: 'ai-transforming-software-development',
-    readTime: '5 min read'
-  }
-];
+import { getPostBySlug, categories } from '@/data/blogs';
+import { notFound } from 'next/navigation';
 
 export async function generateMetadata({ params }) {
-  const { slug } = params;
-  const post = blogPosts.find(p => p.slug === slug);
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
   
+  if (!post) {
+    return {
+      title: 'Blog Post Not Found | TechWave',
+      description: 'The requested blog post could not be found.',
+    };
+  }
+
   return {
-    title: post ? `${post.title} | TechWave Blog` : 'Blog Post | TechWave',
-    description: post ? post.snippet : 'Read our latest blog post about technology trends and innovations.',
+    title: `${post.title} | TechWave Blog`,
+    description: post.snippet,
   };
 }
 
-export default function BlogPost({ params }) {
-  const { slug } = params;
+export default async function BlogPost({ params }) {
+  const { slug } = await params;
   
-  // In a real app, fetch the blog post data based on slug from an API or database
-  const post = blogPosts.find(p => p.slug === slug);
+  // Get the blog post from centralized data
+  const post = getPostBySlug(slug);
   
   if (!post) {
-    return (
-      <div className="container mx-auto px-4 py-20">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl font-bold text-gray-100 mb-6">Blog Post Not Found</h1>
-          <p className="text-xl text-gray-300 mb-8">The blog post you are looking for does not exist or has been removed.</p>
-          <Link 
-            href="/blogs"
-            className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
-          >
-            Return to Blog
-          </Link>
-        </div>
-      </div>
-    );
+    return notFound();
   }
+
+  // Get category name for display
+  const category = categories.find(cat => cat.id === post.category);
 
   return (
     <>
@@ -93,9 +50,9 @@ export default function BlogPost({ params }) {
             
             <div className="flex flex-wrap items-center gap-2 mb-4">
               <span className="bg-blue-900/30 text-blue-400 text-xs font-medium px-2.5 py-1 rounded">
-                {post.category}
+                {category?.name || post.category}
               </span>
-              <span className="text-gray-500 text-sm">{post.date}</span>
+              <span className="text-gray-500 text-sm">{new Date(post.publishedAt).toLocaleDateString()}</span>
               <span className="text-gray-500 text-sm">•</span>
               <span className="text-gray-500 text-sm">{post.readTime}</span>
             </div>
@@ -106,13 +63,21 @@ export default function BlogPost({ params }) {
             
             <div className="flex items-center mb-8">
               <div className="w-12 h-12 rounded-full bg-[#252525] overflow-hidden flex items-center justify-center mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
+                {post.author.image ? (
+                  <img
+                    src={post.author.image}
+                    alt={post.author.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                )}
               </div>
               <div>
-                <p className="text-gray-200 font-medium">{post.author}</p>
-                <p className="text-gray-500 text-sm">{post.authorBio}</p>
+                <p className="text-gray-200 font-medium">{post.author.name}</p>
+                <p className="text-gray-500 text-sm">{post.author.role}</p>
               </div>
             </div>
           </div>
@@ -142,7 +107,7 @@ export default function BlogPost({ params }) {
                     {post.tags.map((tag) => (
                       <Link
                         key={tag}
-                        href={`/blogs/tag/${tag.toLowerCase().replace(' ', '-')}`}
+                        href={`/blogs/tag/${tag}`}
                         className="inline-block bg-[#212121] hover:bg-blue-900/20 border border-[#2a2a2a] text-gray-300 hover:text-blue-400 px-3 py-1 rounded-full text-sm transition-colors"
                       >
                         #{tag}

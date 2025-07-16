@@ -1,32 +1,32 @@
 import Link from 'next/link';
-import BlogList from '@/components/blogs/BlogList';
-import BlogSearch from '@/components/blogs/BlogSearch';
-import BlogCategories from '@/components/blogs/BlogCategories';
+import { tags } from '@/data/blogs';
+import { notFound } from 'next/navigation';
+import TagContent from '@/components/blogs/TagContent';
 
 export async function generateMetadata({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
+  const tag = tags.find(t => t.id === slug);
   
-  // Format the tag name for display
-  const tagName = slug
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-  
+  if (!tag) {
+    return {
+      title: 'Tag Not Found | TechWave Blog',
+      description: 'The requested tag could not be found.',
+    };
+  }
+
   return {
-    title: `#${tagName} Articles | TechWave Blog`,
-    description: `Explore our latest articles tagged with #${tagName.toLowerCase()} - trends, insights, and expert opinions.`,
+    title: `${tag.name} Articles | TechWave Blog`,
+    description: `Explore ${tag.count} articles tagged with ${tag.name} - latest insights and trends.`,
   };
 }
 
-export default function TagPage({ params }) {
-  const { slug } = params;
+export default async function TagPage({ params }) {
+  const { slug } = await params;
   
-  // Format the tag name for display
-  const tagName = slug
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-  
+  // Find tag
+  const tag = tags.find(t => t.id === slug);
+  if (!tag) return notFound();
+
   return (
     <>
       <div className="bg-[#121212] py-16 md:py-24">
@@ -43,33 +43,23 @@ export default function TagPage({ params }) {
             </Link>
             
             <span className="inline-block bg-blue-900/30 border border-blue-500/30 text-blue-400 px-4 py-1 rounded-full text-lg font-medium mb-6">
-              #{tagName}
+              #{tag.name}
             </span>
             
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Articles Tagged with <span className="text-blue-400">#{tagName}</span>
+              Articles Tagged with <span className="text-blue-400">#{tag.name}</span>
             </h1>
             
             <div className="h-1 w-20 bg-blue-500 mx-auto mb-8"></div>
             
             <p className="text-xl text-gray-300">
-              Explore our latest articles and insights related to this topic
+              Explore {tag.count} articles related to this topic
             </p>
           </div>
         </div>
       </div>
       
-      <div className="container mx-auto px-4 py-16">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="lg:w-3/4">
-            <BlogSearch />
-            <BlogList />
-          </div>
-          <aside className="lg:w-1/4">
-            <BlogCategories />
-          </aside>
-        </div>
-      </div>
+      <TagContent tagId={slug} />
     </>
   );
 } 

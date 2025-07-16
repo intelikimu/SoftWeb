@@ -3,21 +3,28 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 
-export default function BlogSearch() {
+const filters = [
+  { id: 'all', label: 'All' },
+  { id: 'latest', label: 'Latest' },
+  { id: 'popular', label: 'Popular' },
+  { id: 'ai', label: 'AI' },
+  { id: 'blockchain', label: 'Blockchain' },
+  { id: 'cloud', label: 'Cloud' }
+]
+
+export default function BlogSearch({ onSearch, onFilterChange }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [activeFilter, setActiveFilter] = useState('all')
   
-  const filters = [
-    { id: 'all', label: 'All' },
-    { id: 'latest', label: 'Latest' },
-    { id: 'popular', label: 'Popular' },
-    { id: 'ai', label: 'AI' },
-    { id: 'blockchain', label: 'Blockchain' },
-    { id: 'cloud', label: 'Cloud' }
-  ]
+  const handleSearch = (e) => {
+    const value = e.target.value
+    setSearchTerm(value)
+    onSearch(value)
+  }
 
   const handleFilterChange = (filterId) => {
     setActiveFilter(filterId)
+    onFilterChange(filterId)
   }
 
   return (
@@ -34,7 +41,7 @@ export default function BlogSearch() {
               type="text"
               placeholder="Search articles..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearch}
               className="w-full bg-[#121212] border border-[#2a2a2a] rounded-lg py-3 px-4 pl-12 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">

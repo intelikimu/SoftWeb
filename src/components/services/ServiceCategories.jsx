@@ -4,6 +4,7 @@ import { useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Link from 'next/link'
 
 // Service categories with icons
 const categories = [
@@ -142,23 +143,23 @@ const cardVariant = {
 
 export default function ServiceCategories() {
   const ref = useRef(null);
-  
+
   // Register GSAP ScrollTrigger - only for desktop enhancement
   useEffect(() => {
     // Make sure we're in the browser
     if (typeof window !== 'undefined') {
       gsap.registerPlugin(ScrollTrigger);
-      
+
       try {
         // Instead of animating on scroll, just make sure content is visible
-        gsap.set('.service-card', { 
+        gsap.set('.service-card', {
           opacity: 1,
           y: 0
         });
       } catch (error) {
         console.error("GSAP animation error:", error);
       }
-      
+
       return () => {
         // Cleanup any ScrollTrigger instances
         if (ScrollTrigger.getAll().length) {
@@ -172,7 +173,7 @@ export default function ServiceCategories() {
     <section className="py-20 bg-[#151515]" ref={ref} style={{ position: 'relative', zIndex: 1 }}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -181,14 +182,14 @@ export default function ServiceCategories() {
           >
             Our Service Categories
           </motion.h2>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             viewport={{ once: true }}
             className="h-1 w-20 bg-blue-500 mx-auto mb-8"
           ></motion.div>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
@@ -198,10 +199,10 @@ export default function ServiceCategories() {
             Explore our comprehensive range of services tailored to meet your technology needs
           </motion.p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {categories.map((category, index) => (
-            <motion.div 
+            <motion.div
               key={category.id}
               custom={index}
               initial="hidden"
@@ -217,10 +218,10 @@ export default function ServiceCategories() {
                   </div>
                   <div className="absolute -right-2 -top-2 w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white">{index + 1}</div>
                 </div>
-                
+
                 <h3 className="text-xl font-bold mb-3 text-gray-100">{category.name}</h3>
                 <p className="text-gray-300 mb-6">{category.description}</p>
-                
+
                 <div className="space-y-2 mb-6">
                   {category.features.map((feature, i) => (
                     <div key={i} className="flex items-center">
@@ -231,10 +232,12 @@ export default function ServiceCategories() {
                     </div>
                   ))}
                 </div>
-                
-                <button className="w-full py-3 bg-[#212121] hover:bg-[#2a2a2a] text-blue-400 font-medium rounded-lg transition-colors">
-                  Learn More
-                </button>
+
+                <Link href={`/services/${category.id}`}>
+                  <button className="w-full py-3 bg-[#212121] hover:bg-[#2a2a2a] text-blue-400 font-medium rounded-lg transition-colors">
+                    Learn More
+                  </button>
+                </Link>
               </div>
             </motion.div>
           ))}

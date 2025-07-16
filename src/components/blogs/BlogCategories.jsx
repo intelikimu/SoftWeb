@@ -2,34 +2,12 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { categories, tags, blogPosts } from '@/data/blogs'
 
-const categories = [
-  { name: 'Artificial Intelligence', count: 15, slug: 'ai' },
-  { name: 'Blockchain', count: 8, slug: 'blockchain' },
-  { name: 'Cloud Computing', count: 12, slug: 'cloud' },
-  { name: 'Web Development', count: 20, slug: 'web-development' },
-  { name: 'DevOps', count: 7, slug: 'devops' },
-  { name: 'Cybersecurity', count: 10, slug: 'cybersecurity' },
-  { name: 'Data Science', count: 9, slug: 'data-science' }
-]
-
-const recentPosts = [
-  {
-    title: 'The Future of AI in Enterprise Software',
-    date: 'June 15, 2023',
-    slug: 'future-of-ai-enterprise'
-  },
-  {
-    title: 'Blockchain Solutions for Supply Chain Management',
-    date: 'June 8, 2023',
-    slug: 'blockchain-supply-chain'
-  },
-  {
-    title: 'Migrating to Serverless Architecture',
-    date: 'May 29, 2023',
-    slug: 'migrating-serverless'
-  }
-]
+// Get recent posts
+const recentPosts = blogPosts
+  .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+  .slice(0, 3)
 
 export default function BlogCategories() {
   return (
@@ -43,9 +21,9 @@ export default function BlogCategories() {
         <h3 className="text-xl font-semibold text-white mb-6">Categories</h3>
         <ul className="space-y-3">
           {categories.map((category) => (
-            <li key={category.slug} className="flex justify-between items-center">
+            <li key={category.id} className="flex justify-between items-center">
               <Link 
-                href={`/blogs/category/${category.slug}`}
+                href={`/blogs/category/${category.id}`}
                 className="text-gray-300 hover:text-blue-400 transition-colors"
               >
                 {category.name}
@@ -71,7 +49,9 @@ export default function BlogCategories() {
                 <h4 className="text-gray-200 font-medium hover:text-blue-400 transition-colors">
                   {post.title}
                 </h4>
-                <p className="text-xs text-gray-500 mt-1">{post.date}</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {new Date(post.publishedAt).toLocaleDateString()}
+                </p>
               </Link>
             </li>
           ))}
@@ -82,13 +62,13 @@ export default function BlogCategories() {
       <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl p-6 shadow-lg">
         <h3 className="text-xl font-semibold text-white mb-6">Tags</h3>
         <div className="flex flex-wrap gap-2">
-          {['AI', 'Machine Learning', 'Cloud', 'AWS', 'React', 'NextJS', 'Web3', 'Blockchain', 'Security', 'DevOps'].map((tag) => (
+          {tags.map((tag) => (
             <Link
-              key={tag}
-              href={`/blogs/tag/${tag.toLowerCase().replace(' ', '-')}`}
+              key={tag.id}
+              href={`/blogs/tag/${tag.id}`}
               className="inline-block bg-[#212121] hover:bg-blue-900/20 border border-[#2a2a2a] text-gray-300 hover:text-blue-400 px-3 py-1 rounded-full text-sm transition-colors"
             >
-              {tag}
+              {tag.name} ({tag.count})
             </Link>
           ))}
         </div>

@@ -3,20 +3,26 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
+// Import specific icons from react-icons
+import { FaReact, FaNodeJs, FaPython, FaAws, FaDocker } from 'react-icons/fa'
+import { SiTensorflow, SiMongodb, SiGraphql, SiNextdotjs, SiPostgresql, SiTypescript, SiDjango, SiKubernetes, SiRedis, SiElasticsearch } from 'react-icons/si'
 
 const techStack = [
-  { name: 'React', icon: '⚛️' },
-  { name: 'Node.js', icon: '🟩' },
-  { name: 'Python', icon: '🐍' },
-  { name: 'TensorFlow', icon: '🧠' },
-  { name: 'MongoDB', icon: '🍃' },
-  { name: 'AWS', icon: '☁️' },
-  { name: 'Docker', icon: '🐳' },
-  { name: 'GraphQL', icon: '⬢' },
-  { name: 'Next.js', icon: '▲' },
-  { name: 'PostgreSQL', icon: '🐘' },
-  { name: 'TypeScript', icon: '🔷' },
-  { name: 'Django', icon: '🎯' },
+  { name: 'React', icon: <FaReact size={48} className="text-blue-500" /> },
+  { name: 'Node.js', icon: <FaNodeJs size={48} className="text-blue-500" /> },
+  { name: 'Python', icon: <FaPython size={48} className="text-blue-500" /> },
+  { name: 'TensorFlow', icon: <SiTensorflow size={48} className="text-blue-500" /> },
+  { name: 'MongoDB', icon: <SiMongodb size={48} className="text-blue-500" /> },
+  { name: 'AWS', icon: <FaAws size={48} className="text-blue-500" /> },
+  { name: 'Docker', icon: <FaDocker size={48} className="text-blue-500" /> },
+  { name: 'GraphQL', icon: <SiGraphql size={48} className="text-blue-500" /> },
+  { name: 'Next.js', icon: <SiNextdotjs size={48} className="text-blue-500" /> },
+  { name: 'PostgreSQL', icon: <SiPostgresql size={48} className="text-blue-500" /> },
+  { name: 'TypeScript', icon: <SiTypescript size={48} className="text-blue-500" /> },
+  { name: 'Django', icon: <SiDjango size={48} className="text-blue-500" /> },
+  { name: 'Kubernetes', icon: <SiKubernetes size={48} className="text-blue-500" /> },
+  { name: 'Redis', icon: <SiRedis size={48} className="text-blue-500" /> },
+  { name: 'Elasticsearch', icon: <SiElasticsearch size={48} className="text-blue-500" /> },
 ]
 
 export default function TechStack() {
@@ -31,33 +37,22 @@ export default function TechStack() {
     const items1 = [...marquee1.children]
     const items2 = [...marquee2.children]
     
-    items1.forEach(item => {
-      const clone = item.cloneNode(true)
-      marquee1.appendChild(clone)
-    })
+    items1.forEach(item => marquee1.appendChild(item.cloneNode(true)))
+    items2.forEach(item => marquee2.appendChild(item.cloneNode(true)))
     
-    items2.forEach(item => {
-      const clone = item.cloneNode(true)
-      marquee2.appendChild(clone)
-    })
-    
-    // Animate first row left-to-right
+    // Animate first row left-to-right (faster)
     gsap.to(marquee1.children, {
       x: "-50%",
-      duration: 25,
+      duration: 10,
       ease: "linear",
       repeat: -1,
     })
     
-    // Animate second row right-to-left
-    gsap.fromTo(marquee2.children, 
+    // Animate second row right-to-left (faster)
+    gsap.fromTo(
+      marquee2.children,
       { x: "-50%" },
-      { 
-        x: "0%", 
-        duration: 25,
-        ease: "linear",
-        repeat: -1,
-      }
+      { x: "0%", duration: 10, ease: "linear", repeat: -1 }
     )
     
     return () => {
@@ -88,13 +83,10 @@ export default function TechStack() {
         {/* First row marquee */}
         <div className="py-8 bg-[#1a1a1a]">
           <div className="flex whitespace-nowrap" ref={marqueeRef1}>
-            {techStack.map((tech, index) => (
-              <div 
-                key={`tech1-${index}`}
-                className="flex items-center justify-center mx-8 min-w-[180px]"
-              >
+            {techStack.map((tech, idx) => (
+              <div key={idx} className="flex items-center justify-center mx-8 min-w-[180px]">
                 <div className="bg-[#212121] rounded-lg shadow-md p-4 w-full text-center border border-[#2a2a2a]">
-                  <div className="text-4xl mb-2">{tech.icon}</div>
+                  <div className="mb-2 flex justify-center">{tech.icon}</div>
                   <div className="font-medium text-gray-300">{tech.name}</div>
                 </div>
               </div>
@@ -105,13 +97,10 @@ export default function TechStack() {
         {/* Second row marquee (opposite direction) */}
         <div className="py-8 bg-[#161616]">
           <div className="flex whitespace-nowrap" ref={marqueeRef2}>
-            {techStack.slice().reverse().map((tech, index) => (
-              <div 
-                key={`tech2-${index}`}
-                className="flex items-center justify-center mx-8 min-w-[180px]"
-              >
+            {techStack.slice().reverse().map((tech, idx) => (
+              <div key={idx} className="flex items-center justify-center mx-8 min-w-[180px]">
                 <div className="bg-[#212121] rounded-lg shadow-md p-4 w-full text-center border border-[#2a2a2a]">
-                  <div className="text-4xl mb-2">{tech.icon}</div>
+                  <div className="mb-2 flex justify-center">{tech.icon}</div>
                   <div className="font-medium text-gray-300">{tech.name}</div>
                 </div>
               </div>
@@ -121,4 +110,4 @@ export default function TechStack() {
       </div>
     </section>
   )
-} 
+}

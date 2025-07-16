@@ -4,82 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-
-// Sample blog data
-const blogPosts = [
-  {
-    id: 1,
-    title: 'How AI is Transforming Software Development',
-    snippet: 'Artificial Intelligence is revolutionizing the way we build software, from code generation to automated testing and deployment.',
-    category: 'AI',
-    image: '/blogs/ai-dev.jpg',
-    date: 'June 28, 2023',
-    author: 'Sarah Johnson',
-    authorImage: '/team/team-1.jpg',
-    slug: 'ai-transforming-software-development',
-    readTime: '5 min read'
-  },
-  {
-    id: 2,
-    title: 'The Future of Blockchain in Financial Services',
-    snippet: 'Blockchain technology is poised to disrupt traditional financial systems, offering increased security, transparency, and efficiency.',
-    category: 'Blockchain',
-    image: '/blogs/blockchain.jpg',
-    date: 'June 21, 2023',
-    author: 'Michael Chen',
-    authorImage: '/team/team-2.jpg',
-    slug: 'blockchain-financial-services',
-    readTime: '7 min read'
-  },
-  {
-    id: 3,
-    title: 'Serverless Architecture: Benefits and Challenges',
-    snippet: 'Explore the advantages of serverless computing and the potential hurdles businesses face during implementation and scaling.',
-    category: 'Cloud',
-    image: '/blogs/serverless.jpg',
-    date: 'June 15, 2023',
-    author: 'Alex Rodriguez',
-    authorImage: '/team/team-3.jpg',
-    slug: 'serverless-architecture-benefits-challenges',
-    readTime: '6 min read'
-  },
-  {
-    id: 4,
-    title: 'Building Secure Web Applications in 2023',
-    snippet: 'Learn the latest security practices and tools to protect your web applications from modern cyber threats and vulnerabilities.',
-    category: 'Cybersecurity',
-    image: '/blogs/security.jpg',
-    date: 'June 10, 2023',
-    author: 'Emma Wilson',
-    authorImage: '/team/team-4.jpg',
-    slug: 'building-secure-web-applications',
-    readTime: '8 min read'
-  },
-  {
-    id: 5,
-    title: 'Optimizing React Applications for Performance',
-    snippet: 'Techniques and best practices to ensure your React applications are fast, responsive, and provide excellent user experiences.',
-    category: 'Web Development',
-    image: '/blogs/react-perf.jpg',
-    date: 'June 5, 2023',
-    author: 'David Kim',
-    authorImage: '/team/team-5.jpg',
-    slug: 'optimizing-react-applications',
-    readTime: '6 min read'
-  },
-  {
-    id: 6,
-    title: 'Implementing DevOps in Enterprise Organizations',
-    snippet: 'Strategies for successfully adopting DevOps practices in large organizations to improve collaboration and deployment speed.',
-    category: 'DevOps',
-    image: '/blogs/devops.jpg',
-    date: 'May 30, 2023',
-    author: 'Lisa Morgan',
-    authorImage: '/team/team-6.jpg',
-    slug: 'devops-enterprise-organizations',
-    readTime: '7 min read'
-  },
-]
+import { blogPosts, categories } from '@/data/blogs'
 
 // Card animation variants
 const cardVariants = {
@@ -94,7 +19,7 @@ const cardVariants = {
   })
 }
 
-export default function BlogList() {
+export default function BlogList({ filter = 'all', searchQuery = '', categoryId = '', tagId = '' }) {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
@@ -102,13 +27,48 @@ export default function BlogList() {
 
   useEffect(() => {
     // Simulate loading data
+    setLoading(true)
     const timer = setTimeout(() => {
-      setPosts(blogPosts)
+      let filteredPosts = [...blogPosts]
+
+      // Apply filters
+      if (categoryId) {
+        filteredPosts = filteredPosts.filter(post => post.category === categoryId)
+      }
+
+      if (tagId) {
+        filteredPosts = filteredPosts.filter(post => post.tags.includes(tagId))
+      }
+
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase()
+        filteredPosts = filteredPosts.filter(post => 
+          post.title.toLowerCase().includes(query) ||
+          post.snippet.toLowerCase().includes(query)
+        )
+      }
+
+      // Sort posts based on filter
+      switch (filter) {
+        case 'latest':
+          filteredPosts.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+          break
+        case 'popular':
+          // In a real app, this would be based on view count or likes
+          filteredPosts = filteredPosts.slice(0, 5)
+          break
+        default:
+          // 'all' - keep default order
+          break
+      }
+
+      setPosts(filteredPosts)
       setLoading(false)
+      setCurrentPage(1) // Reset to first page when filters change
     }, 500)
 
     return () => clearTimeout(timer)
-  }, [])
+  }, [filter, searchQuery, categoryId, tagId])
 
   // Calculate pagination
   const indexOfLastPost = currentPage * postsPerPage
@@ -139,6 +99,15 @@ export default function BlogList() {
     )
   }
 
+  if (posts.length === 0) {
+    return (
+      <div className="text-center py-20">
+        <h3 className="text-2xl font-bold text-gray-300 mb-4">No Posts Found</h3>
+        <p className="text-gray-400">Try adjusting your search or filters</p>
+      </div>
+    )
+  }
+
   return (
     <div>
       <div className="grid grid-cols-1 gap-8">
@@ -155,7 +124,6 @@ export default function BlogList() {
               <div className="md:w-1/3 relative h-60 md:h-auto">
                 <div className="bg-gradient-to-br from-blue-600/20 to-purple-600/20 absolute inset-0 z-0"></div>
                 <div className="absolute inset-0 flex items-center justify-center text-gray-500">
-                  {/* Placeholder for image - in production replace with real images */}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
@@ -164,9 +132,9 @@ export default function BlogList() {
               <div className="md:w-2/3 p-6">
                 <div className="flex flex-wrap items-center gap-2 mb-3">
                   <span className="bg-blue-900/30 text-blue-400 text-xs font-medium px-2.5 py-1 rounded">
-                    {post.category}
+                    {categories.find(cat => cat.id === post.category)?.name || post.category}
                   </span>
-                  <span className="text-gray-500 text-xs">{post.date}</span>
+                  <span className="text-gray-500 text-xs">{new Date(post.publishedAt).toLocaleDateString()}</span>
                   <span className="text-gray-500 text-xs">•</span>
                   <span className="text-gray-500 text-xs">{post.readTime}</span>
                 </div>
@@ -176,11 +144,24 @@ export default function BlogList() {
                 <p className="text-gray-400 mb-4">{post.snippet}</p>
                 <div className="flex items-center">
                   <div className="w-8 h-8 rounded-full bg-[#252525] overflow-hidden flex items-center justify-center mr-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
+                    {post.author.image ? (
+                      <Image
+                        src={post.author.image}
+                        alt={post.author.name}
+                        width={32}
+                        height={32}
+                        className="object-cover"
+                      />
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    )}
                   </div>
-                  <span className="text-sm text-gray-400">{post.author}</span>
+                  <div>
+                    <span className="text-sm text-gray-300 font-medium">{post.author.name}</span>
+                    <span className="text-sm text-gray-500 ml-2">• {post.author.role}</span>
+                  </div>
                 </div>
               </div>
             </Link>
