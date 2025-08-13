@@ -47,8 +47,8 @@ export default function Navbar() {
       transition={{ duration: 0.5 }}
       className={`fixed w-full px-4 py-3 md:px-6 md:py-4 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#1a1a1a]/95 backdrop-blur-sm shadow-lg'
-          : 'bg-[#121212] border-b border-[#2a2a2a]'
+          ? ' backdrop-blur-sm shadow-lg'
+          : ' border-b border-[#2a2a2a]'
       }`}
     >
       <div className="container mx-auto flex justify-between items-center">
@@ -124,7 +124,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="md:hidden overflow-hidden bg-[#1a1a1a] border-t border-[#2a2a2a] mt-3"
+            className="md:hidden overflow-hidden  border-t border-[#2a2a2a] mt-3"
           >
             <div className="container mx-auto py-4 px-4">
               <ul className="flex flex-col space-y-4">

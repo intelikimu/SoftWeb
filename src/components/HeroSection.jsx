@@ -33,8 +33,8 @@ export default function HeroSection() {
           mouseInteraction={true}
           density={1.5}
           glowIntensity={0.5}
-          saturation={0.8}
-          hueShift={240}
+        
+         
           speed={1.0}
           repulsionStrength={2}
           twinkleIntensity={0.3}
