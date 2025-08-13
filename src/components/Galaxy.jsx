@@ -214,8 +214,16 @@ export default function Galaxy({
     let program;
 
     function resize() {
-      const scale = 1;
-      renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
+      const scale = window.devicePixelRatio || 1;
+      const width = ctn.offsetWidth;
+      const height = ctn.offsetHeight;
+      
+      renderer.setSize(width * scale, height * scale);
+      
+      // Set canvas CSS size to match container
+      gl.canvas.style.width = width + 'px';
+      gl.canvas.style.height = height + 'px';
+      
       if (program) {
         program.uniforms.uResolution.value = new Color(
           gl.canvas.width,
@@ -224,7 +232,16 @@ export default function Galaxy({
         );
       }
     }
+    
+    // Handle window resize
     window.addEventListener("resize", resize, false);
+    
+    // Handle container size changes with ResizeObserver
+    const resizeObserver = new ResizeObserver(() => {
+      resize();
+    });
+    resizeObserver.observe(ctn);
+    
     resize();
 
     const geometry = new Triangle(gl);
@@ -304,17 +321,34 @@ export default function Galaxy({
       targetMouseActive.current = 0.0;
     }
 
+    function handleMouseEnter() {
+      targetMouseActive.current = 1.0;
+    }
+
     if (mouseInteraction) {
-      ctn.addEventListener("mousemove", handleMouseMove);
-      ctn.addEventListener("mouseleave", handleMouseLeave);
+      // Add event listeners to both container and canvas
+      ctn.addEventListener("mousemove", handleMouseMove, { passive: true });
+      ctn.addEventListener("mouseleave", handleMouseLeave, { passive: true });
+      ctn.addEventListener("mouseenter", handleMouseEnter, { passive: true });
+      
+      // Also add to canvas after it's created
+      gl.canvas.addEventListener("mousemove", handleMouseMove, { passive: true });
+      gl.canvas.addEventListener("mouseleave", handleMouseLeave, { passive: true });
+      gl.canvas.addEventListener("mouseenter", handleMouseEnter, { passive: true });
     }
 
     return () => {
       cancelAnimationFrame(animateId);
       window.removeEventListener("resize", resize);
+      resizeObserver.disconnect();
       if (mouseInteraction) {
         ctn.removeEventListener("mousemove", handleMouseMove);
         ctn.removeEventListener("mouseleave", handleMouseLeave);
+        ctn.removeEventListener("mouseenter", handleMouseEnter);
+        
+        gl.canvas.removeEventListener("mousemove", handleMouseMove);
+        gl.canvas.removeEventListener("mouseleave", handleMouseLeave);
+        gl.canvas.removeEventListener("mouseenter", handleMouseEnter);
       }
       ctn.removeChild(gl.canvas);
       gl.getExtension("WEBGL_lose_context")?.loseContext();
@@ -338,5 +372,15 @@ export default function Galaxy({
     transparent,
   ]);
 
-  return <div ref={ctnDom} className="w-full h-full relative" {...rest} />;
+  return (
+    <div 
+      ref={ctnDom} 
+      className="w-full h-full relative block" 
+      style={{ 
+        minHeight: '100%',
+        pointerEvents: mouseInteraction ? 'auto' : 'none'
+      }}
+      {...rest} 
+    />
+  );
 }

@@ -2,7 +2,6 @@
 
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
-import Image from "next/image"
 
 // Sample testimonials
 const testimonials = [
@@ -71,13 +70,10 @@ export default function TestimonialsSection() {
               transition={{ duration: 0.6, delay: idx * 0.1 }}
               className="flex flex-col items-center bg-[#1a1a1a] p-6 rounded-2xl shadow-lg"
             >
-              <div className="relative mb-4 h-20 w-20 rounded-full overflow-hidden border-4 border-blue-500">
-                <Image
-                  src={t.avatar}
-                  alt={t.name}
-                  fill
-                  className="object-cover"
-                />
+              <div className="relative mb-4 h-20 w-20 rounded-full overflow-hidden border-4 border-blue-500 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                <span className="text-white font-bold text-xl">
+                  {t.name.split(' ').map(n => n[0]).join('')}
+                </span>
               </div>
               <p className="text-gray-300 italic text-center mb-6">“{t.quote}”</p>
               <div className="text-center">

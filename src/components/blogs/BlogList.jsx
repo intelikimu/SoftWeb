@@ -4,82 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-
-// Sample blog data
-const blogPosts = [
-  {
-    id: 1,
-    title: 'How AI is Transforming Software Development',
-    snippet: 'Artificial Intelligence is revolutionizing the way we build software, from code generation to automated testing and deployment.',
-    category: 'AI',
-    image: '/blogs/ai-dev.jpg',
-    date: 'June 28, 2023',
-    author: 'Sarah Johnson',
-    authorImage: '/team/team-1.jpg',
-    slug: 'ai-transforming-software-development',
-    readTime: '5 min read'
-  },
-  {
-    id: 2,
-    title: 'The Future of Blockchain in Financial Services',
-    snippet: 'Blockchain technology is poised to disrupt traditional financial systems, offering increased security, transparency, and efficiency.',
-    category: 'Blockchain',
-    image: '/blogs/blockchain.jpg',
-    date: 'June 21, 2023',
-    author: 'Michael Chen',
-    authorImage: '/team/team-2.jpg',
-    slug: 'blockchain-financial-services',
-    readTime: '7 min read'
-  },
-  {
-    id: 3,
-    title: 'Serverless Architecture: Benefits and Challenges',
-    snippet: 'Explore the advantages of serverless computing and the potential hurdles businesses face during implementation and scaling.',
-    category: 'Cloud',
-    image: '/blogs/serverless.jpg',
-    date: 'June 15, 2023',
-    author: 'Alex Rodriguez',
-    authorImage: '/team/team-3.jpg',
-    slug: 'serverless-architecture-benefits-challenges',
-    readTime: '6 min read'
-  },
-  {
-    id: 4,
-    title: 'Building Secure Web Applications in 2023',
-    snippet: 'Learn the latest security practices and tools to protect your web applications from modern cyber threats and vulnerabilities.',
-    category: 'Cybersecurity',
-    image: '/blogs/security.jpg',
-    date: 'June 10, 2023',
-    author: 'Emma Wilson',
-    authorImage: '/team/team-4.jpg',
-    slug: 'building-secure-web-applications',
-    readTime: '8 min read'
-  },
-  {
-    id: 5,
-    title: 'Optimizing React Applications for Performance',
-    snippet: 'Techniques and best practices to ensure your React applications are fast, responsive, and provide excellent user experiences.',
-    category: 'Web Development',
-    image: '/blogs/react-perf.jpg',
-    date: 'June 5, 2023',
-    author: 'David Kim',
-    authorImage: '/team/team-5.jpg',
-    slug: 'optimizing-react-applications',
-    readTime: '6 min read'
-  },
-  {
-    id: 6,
-    title: 'Implementing DevOps in Enterprise Organizations',
-    snippet: 'Strategies for successfully adopting DevOps practices in large organizations to improve collaboration and deployment speed.',
-    category: 'DevOps',
-    image: '/blogs/devops.jpg',
-    date: 'May 30, 2023',
-    author: 'Lisa Morgan',
-    authorImage: '/team/team-6.jpg',
-    slug: 'devops-enterprise-organizations',
-    readTime: '7 min read'
-  },
-]
+import { blogPosts } from '@/data/blogs'
 
 // Card animation variants
 const cardVariants = {
@@ -173,7 +98,7 @@ export default function BlogList() {
                 <h2 className="text-xl md:text-2xl font-bold text-white mb-2 hover:text-blue-400 transition-colors">
                   {post.title}
                 </h2>
-                <p className="text-gray-400 mb-4">{post.snippet}</p>
+                <p className="text-gray-400 mb-4">{post.excerpt}</p>
                 <div className="flex items-center">
                   <div className="w-8 h-8 rounded-full bg-[#252525] overflow-hidden flex items-center justify-center mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
