@@ -43,7 +43,7 @@ export default function TechStack() {
     // Animate first row left-to-right (faster)
     gsap.to(marquee1.children, {
       x: "-50%",
-      duration: 10,
+      duration: 25,
       ease: "linear",
       repeat: -1,
     })
@@ -52,7 +52,7 @@ export default function TechStack() {
     gsap.fromTo(
       marquee2.children,
       { x: "-50%" },
-      { x: "0%", duration: 10, ease: "linear", repeat: -1 }
+      { x: "0%", duration: 25, ease: "linear", repeat: -1 }
     )
     
     return () => {

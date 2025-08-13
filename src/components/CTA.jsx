@@ -7,10 +7,10 @@ export default function CTA() {
   return (
     <section className="py-20 bg-[#151515] text-white relative overflow-hidden">
       {/* Background elements */}
-      <div className="absolute inset-0 overflow-hidden opacity-20">
+      {/* <div className="absolute inset-0 overflow-hidden opacity-20">
         <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-blue-600 blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-blue-800 blur-3xl"></div>
-      </div>
+      </div> */}
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
