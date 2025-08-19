@@ -31,7 +31,7 @@ export default async function TagPage({ params }) {
     <>
       <div className="bg-[#121212] py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-4xl flex flex-col items-center justify-around mx-auto text-center">
             <Link 
               href="/blogs"
               className="inline-flex items-center text-gray-400 hover:text-blue-400 mb-6 transition-colors"
@@ -59,7 +59,7 @@ export default async function TagPage({ params }) {
         </div>
       </div>
       
-      <TagContent tagId={slug} />
+      <TagContent tag={slug} />
     </>
   );
 } 

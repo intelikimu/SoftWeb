@@ -6,7 +6,6 @@ import { getBlogsByTag, tags } from '@/data/blogs'
 
 export default function TagContent({ tag }) {
   const tagData = tags.find(t => t.slug === tag)
-  const blogs = getBlogsByTag(tag)
 
   if (!tagData) {
     return (
@@ -16,6 +15,8 @@ export default function TagContent({ tag }) {
       </div>
     )
   }
+
+  const blogs = getBlogsByTag(tag)
 
   return (
     <div className="py-20 bg-[#121212]">

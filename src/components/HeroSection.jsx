@@ -33,8 +33,6 @@ export default function HeroSection() {
           mouseInteraction={true}
           density={1.5}
           glowIntensity={0.5}
-        
-         
           speed={1.0}
           repulsionStrength={2}
           twinkleIntensity={0.3}
@@ -56,16 +54,26 @@ export default function HeroSection() {
             <p className="mb-8 text-base sm:text-lg md:text-xl text-gray-300">
               Transforming ideas into powerful digital experiences with cutting-edge technologies
             </p>
+            
+            {/* Glassy Buttons */}
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 href="/contact"
-                className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
+                className="relative rounded-xl px-6 py-3 font-medium text-white 
+                           bg-blue-500/20 border border-blue-400/40 backdrop-blur-md 
+                           shadow-lg shadow-blue-500/20 
+                           transition-all duration-300 hover:bg-blue-500/30 hover:shadow-blue-500/40 
+                           hover:scale-105"
               >
                 Get In Touch
               </Link>
               <Link
                 href="/services"
-                className="rounded-lg border border-gray-700 bg-[#1e1e1e] px-6 py-3 font-medium text-gray-300 transition-colors hover:bg-[#2a2a2a]"
+                className="relative rounded-xl px-6 py-3 font-medium text-gray-200 
+                           bg-white/10 border border-gray-500/30 backdrop-blur-md 
+                           shadow-lg shadow-gray-800/30 
+                           transition-all duration-300 hover:bg-white/20 hover:border-gray-400 
+                           hover:scale-105"
               >
                 Explore Services
               </Link>
@@ -75,4 +83,4 @@ export default function HeroSection() {
       </div>
     </section>
   )
-} 
+}
